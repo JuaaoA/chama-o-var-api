@@ -1,0 +1,6 @@
+@chama_o_var_api_HostAddress = http://localhost:5236
+
+GET {{chama_o_var_api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
