@@ -10,7 +10,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddTransient<ITecnicoRepository, TecnicoRepository>();
+// Adicionar transient
+builder.Services.AddTransient<ITorcedorRepository, TorcedorRepository>();
 
 var app = builder.Build();
 
