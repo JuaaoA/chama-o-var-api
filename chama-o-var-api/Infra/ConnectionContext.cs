@@ -17,6 +17,7 @@ namespace chama_o_var_api.Infra
         string mysqlConnection = "Server=localhost;" +
             "Port=3306;" +
             "Database=dbFuncionarios;" +
+            "password=40028922;" +
             "User=root;";
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
