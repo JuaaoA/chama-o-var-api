@@ -13,6 +13,49 @@ namespace chama_o_var_api.Infra
             _context.SaveChanges();
         }
 
+        public Torcedor? GetTorcedorById(int id)
+        {
+            // Declarar um torcedor nulo
+            Torcedor? usuario = null;
+
+            // Tentar encontrar
+            try
+            {
+                // Procurar usuário
+                usuario = _context.Torcedores.SingleOrDefault(usr => usr.id == id);
+            }
+            catch
+            {
+                // Retorne nulo caso erro
+                return null;
+            }
+
+            // Retonar o usuário usando esse id
+            return usuario;
+        }
+
+        public Torcedor? RealizarLogin(string email, string senha)
+        {
+            // Começar com o valor nulo
+            Torcedor? usuario = null;
+
+            // Tentar
+            try
+            {
+                // Procurar o torcedor
+                usuario = _context.Torcedores.SingleOrDefault(user =>
+                user.email == email && user.senha == senha);
+            }
+            catch
+            {
+                // Retornar nulo caso de erro
+                return null;
+            }
+
+            // Caso tudo dê certo, retorne o usuário encontrado
+            return usuario;
+        }
+
         public string PossuiCredenciaisUnicas(string cpf, string email, string telefone)
         {
             if (_context.Torcedores.FirstOrDefault(ct => ct.cpf == cpf) != null) return "CPF";

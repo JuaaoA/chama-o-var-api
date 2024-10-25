@@ -17,20 +17,58 @@ namespace chama_o_var_api.Controllers
     {
         // Interface
         private readonly ITorcedorRepository _torcedorRepository;
+        private readonly ITokenRepository _tokenRepository;
 
         // Construtor
-        public TorcedorLogin(ITorcedorRepository torcedorRepository)
+        public TorcedorLogin(ITorcedorRepository torcedorRepository, ITokenRepository tokenRepository)
         {
             _torcedorRepository = torcedorRepository;
+            _tokenRepository = tokenRepository;
         }
 
         // Request
         [HttpGet]
         public IActionResult TentarLogin(string email, string senha)
         {
+            // Caso valores sejam nulos
+            if (email == null || senha == null)
+            {
+                return StatusCode(400, "Senha ou Email não preenchidos!");
+            }
 
-            // Se não todo terminar
-            return StatusCode(500, $"Login Inválido");
+            // Criar objeto do usuário a ser encontrado
+            Torcedor? user;
+
+            // Tentar
+            try
+            {
+                // Realizar a procura
+                user = _torcedorRepository.RealizarLogin(email, senha);
+
+                // Caso não tenha encontrado ninguém
+                if (user == null)
+                {
+                    // Retornar que o login não foi encontrado
+                    return StatusCode(500, "Login Inválido!");
+                }
+                // Caso tenha encontrado o usuário
+                else
+                {
+                    // Criar um cliente http para criar um token novo
+                    //HttpClient client = new HttpClient();
+
+                    // Criar novo token com o id do usuário
+                    var token = _tokenRepository.CriarToken(user.id);
+
+                    // Retornar o token para que o usuário possa entrar
+                    return StatusCode(200, token);
+                }
+            }
+            catch (Exception e)
+            {
+                // Caso algum erro ocorra, não 
+                return StatusCode(500, $"Não foi possível efetuar o login {e}");
+            }
         }
     }
 
@@ -52,11 +90,13 @@ namespace chama_o_var_api.Controllers
         [HttpGet]
         public IActionResult VerificarUnico(string cpf, string email, string telefone)
         {
+            // Fazer a procura dos dados colocados no banco de dados
             string resultado = _torcedorRepository.PossuiCredenciaisUnicas(cpf, email, telefone);
 
             // Verificar se as credencias são unicas ou ja existem
             if (resultado.Length == 0)
             {
+                // Se são unicas, tudo Ok
                 return Ok();
             }
 
@@ -129,8 +169,6 @@ namespace chama_o_var_api.Controllers
                 });
             }
            
-
-
             // Criar o torcedor novo e confimar
             var novoTorcedor = new Torcedor(nome_completo, cpf, email, telefone, nascimento, senha, tecnico);
             _torcedorRepository.Add(novoTorcedor);

@@ -10,6 +10,7 @@ namespace chama_o_var_api.Infra
     {
         // SETS
         public DbSet<Torcedor> Torcedores { get; set; }
+        public DbSet<Token> Tokens { get; set; }
 
         // TODO - CRIAR CONFIGS
 
@@ -18,8 +19,11 @@ namespace chama_o_var_api.Infra
             "Port=3306;" +
             "Database=dbFuncionarios;" +
             "User=root;";
+
+        // Ao configurar
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            // Usar MySQL
             optionsBuilder.UseMySQL(mysqlConnection);
         }
     }

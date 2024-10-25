@@ -3,8 +3,19 @@ namespace chama_o_var_api.Infra
 {
 	public static class InputValidation
 	{
-		// Verificação do email
-		public static bool ValidarEmail(string email)
+        private static Random random = new Random();
+
+        public static string GenerateNewTokenString(int tamanho)
+        {
+            // Caracteres possíveis
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+            return new string(Enumerable.Repeat(chars, tamanho)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
+        // Verificação do email
+        public static bool ValidarEmail(string email)
 		{
 			// Tirar espaços nos cantos
 			email = email.Trim();
