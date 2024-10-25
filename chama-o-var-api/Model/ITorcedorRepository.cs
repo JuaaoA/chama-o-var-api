@@ -6,7 +6,9 @@ namespace chama_o_var_api.Model
 	{
 		void Add(Torcedor torcedor);
 
-		List<Torcedor> Get();
+		string PossuiCredenciaisUnicas(string cpf, string email, string telefone);
+
+        List<Torcedor> Get();
 	}
 }
 

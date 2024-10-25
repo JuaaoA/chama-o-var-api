@@ -10,6 +10,61 @@ using chama_o_var_api.Infra;
 
 namespace chama_o_var_api.Controllers
 {
+    // ROTAS OUTRO LUGAR
+    [ApiController]
+    [Route("chamaovar-api/torcedor/login")]
+    public class TorcedorLogin : ControllerBase
+    {
+        // Interface
+        private readonly ITorcedorRepository _torcedorRepository;
+
+        // Construtor
+        public TorcedorLogin(ITorcedorRepository torcedorRepository)
+        {
+            _torcedorRepository = torcedorRepository;
+        }
+
+        // Request
+        [HttpGet]
+        public IActionResult TentarLogin(string email, string senha)
+        {
+
+            // Se não todo terminar
+            return StatusCode(500, $"Login Inválido");
+        }
+    }
+
+    // Verificação de unicidade
+    [ApiController]
+    [Route("chamaovar-api/torcedor/verificar-unico")]
+    public class TorcedorUnicidadeController : ControllerBase
+    {
+        // Interface
+        private readonly ITorcedorRepository _torcedorRepository;
+
+        // Construtor
+        public TorcedorUnicidadeController(ITorcedorRepository torcedorRepository)
+        {
+            _torcedorRepository = torcedorRepository;
+        }
+
+        // Request
+        [HttpGet]
+        public IActionResult VerificarUnico(string cpf, string email, string telefone)
+        {
+            string resultado = _torcedorRepository.PossuiCredenciaisUnicas(cpf, email, telefone);
+
+            // Verificar se as credencias são unicas ou ja existem
+            if (resultado.Length == 0)
+            {
+                return Ok();
+            }
+
+            // Se não
+            return StatusCode(500, $"O Campo {resultado} já existe no sistema!");
+        }
+    }
+
     [ApiController]
     [Route("chamaovar-api/torcedor")]
     public class TorcedorController : ControllerBase
