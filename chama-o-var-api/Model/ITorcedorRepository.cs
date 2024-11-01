@@ -13,11 +13,13 @@ namespace chama_o_var_api.Model
 
 		string PossuiCredenciaisUnicas(string cpf, string email, string telefone);
 
-		Torcedor? RealizarLogin(string email, string senha);
+		Torcedor? RealizarLogin(string email, string senha, bool tecnicoLogin);
 
         List<Torcedor> Get();
 
 		Torcedor? GetTorcedorById(int id);
+
+		Torcedor? GetTecnicoById(int id);
     }
 }
 

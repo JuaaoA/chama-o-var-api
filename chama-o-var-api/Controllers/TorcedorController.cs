@@ -43,7 +43,7 @@ namespace chama_o_var_api.Controllers
             try
             {
                 // Realizar a procura
-                user = _torcedorRepository.RealizarLogin(email, senha);
+                user = _torcedorRepository.RealizarLogin(email, senha, false);
 
                 // Caso não tenha encontrado ninguém
                 if (user == null)
@@ -54,9 +54,6 @@ namespace chama_o_var_api.Controllers
                 // Caso tenha encontrado o usuário
                 else
                 {
-                    // Criar um cliente http para criar um token novo
-                    //HttpClient client = new HttpClient();
-
                     // Criar novo token com o id do usuário
                     var token = _tokenRepository.CriarToken(user.id);
 

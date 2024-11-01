@@ -56,7 +56,7 @@ namespace chama_o_var_api.Controllers
             }
 
             // Encontrar dados do usuário usando o token
-            Torcedor? torcedor = _torcedorRepository.GetTorcedorById(tk.id);
+            Torcedor? torcedor = _torcedorRepository.GetTorcedorById(tk.torcedor);
 
             // Caso não tenha encontrado o torcedor
             if (torcedor == null)

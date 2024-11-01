@@ -34,7 +34,29 @@ namespace chama_o_var_api.Infra
             return usuario;
         }
 
-        public Torcedor? RealizarLogin(string email, string senha)
+        public Torcedor? GetTecnicoById(int id)
+        {
+            // Declarar um torcedor nulo
+            Torcedor? usuario = null;
+
+            // Tentar encontrar
+            try
+            {
+                // Procurar torcedor com esse id que seja TECNICO
+                usuario = _context.Torcedores.SingleOrDefault(usr => usr.id == id
+                                                                  && usr.tecnico);
+            }
+            catch
+            {
+                // Retornar nulo caso erro
+                return null;
+            }
+
+            // Retornar o colaborador
+            return usuario;
+        }
+
+        public Torcedor? RealizarLogin(string email, string senha, bool tecnicoLogin)
         {
             // Começar com o valor nulo
             Torcedor? usuario = null;
@@ -42,9 +64,20 @@ namespace chama_o_var_api.Infra
             // Tentar
             try
             {
-                // Procurar o torcedor
-                usuario = _context.Torcedores.SingleOrDefault(user =>
-                user.email == email && user.senha == senha);
+                // Procurar o torcedor ou técnico
+                if (tecnicoLogin)
+                {
+                    // Procurar se é tecnico
+                    usuario = _context.Torcedores.SingleOrDefault(user =>
+                    user.email == email && user.senha == senha && user.tecnico);
+                }
+                else
+                {
+                    // Procurar apenas o torcedor
+                    usuario = _context.Torcedores.SingleOrDefault(user =>
+                    user.email == email && user.senha == senha);
+                }
+                
             }
             catch
             {
@@ -52,7 +85,7 @@ namespace chama_o_var_api.Infra
                 return null;
             }
 
-            // Caso tudo dê certo, retorne o usuário encontrado
+            // Caso tudo dê certo, retorne o token encontrado
             return usuario;
         }
 
