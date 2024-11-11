@@ -89,6 +89,11 @@ namespace chama_o_var_api.Infra
             return usuario;
         }
 
+        public bool UsuarioJaExiste(int id)
+        {
+            return (_context.Torcedores.FirstOrDefault(user => user.id == id) != null);
+        }
+
         public string PossuiCredenciaisUnicas(string cpf, string email, string telefone)
         {
             if (_context.Torcedores.FirstOrDefault(ct => ct.cpf == cpf) != null) return "CPF";

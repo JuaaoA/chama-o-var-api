@@ -13,6 +13,7 @@ builder.Services.AddSwaggerGen();
 // Adicionar transient
 builder.Services.AddTransient<ITorcedorRepository, TorcedorRepository>();
 builder.Services.AddTransient<ITokenRepository, TokenRepository>();
+builder.Services.AddTransient<IOcorrenciaRepository, OcorrenciaRepository>();
 
 var app = builder.Build();
 
