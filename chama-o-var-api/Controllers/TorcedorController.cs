@@ -12,6 +12,47 @@ namespace chama_o_var_api.Controllers
 {
     // ROTAS OUTRO LUGAR
     [ApiController]
+    [Route("chamaovar-api/torcedor/get")]
+    public class TorcedorGet : ControllerBase
+    {
+        // Interface
+        private readonly ITorcedorRepository _torcedorRepository;
+        private readonly ITokenRepository _tokenRepository;
+
+        // Construtor
+        public TorcedorGet(ITorcedorRepository torcedorRepository, ITokenRepository tokenRepository)
+        {
+            _torcedorRepository = torcedorRepository;
+            _tokenRepository = tokenRepository;
+        }
+
+        [HttpGet]
+        public IActionResult GetById(int torcedorId)
+        {
+            // Se o ID for menor que 0
+            if (torcedorId < 0)
+            {
+                // Retornar erro
+                return StatusCode(500, "Digite um ID válido");
+            }
+
+            // Tentar
+            try
+            {
+                // Pegar o torcedor la ele
+                Torcedor? torc = _torcedorRepository.GetTorcedorById(torcedorId);
+
+                return Ok(torc);
+            }
+            catch
+            {
+                return StatusCode(500, "Erro ao retornar torcedor / Server-side");
+            }
+        }
+    }
+
+
+    [ApiController]
     [Route("chamaovar-api/torcedor/login")]
     public class TorcedorLogin : ControllerBase
     {

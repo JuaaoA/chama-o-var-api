@@ -132,6 +132,23 @@ namespace chama_o_var_api.Controllers
 			return Ok();
 		}
 
+		// APAGAR OCORRENCIA
+		[HttpDelete]
+		public IActionResult DeleteOcorrencia(int id)
+		{
+			// Procurar no banco de dados
+			bool resultado = _ocorrenciaRepository.Delete(id);
+
+			// Caso dê errado
+			if (!resultado)
+			{
+				return StatusCode(500, "Ocorreu um erro ao apagar a ocorrência!");
+			}
+
+			// Retornar que deu certo
+			return StatusCode(200);
+		}
+
 		// EDITAR OCORRENCIA
 		[HttpPatch]
 		public IActionResult PatchOcorrencia(int id, string acontecimento, DateTime data, int penalidade)

@@ -19,6 +19,28 @@ namespace chama_o_var_api.Infra
             return _context.Ocorrencias.ToList();
         }
 
+        public bool Delete(int id)
+        {
+            // Tentar
+            try
+            {
+                // Remover a ocorrência no BD
+                _context.Ocorrencias.Remove(_context.Ocorrencias.Single(oco => oco.id == id));
+
+                // Salvar
+                _context.SaveChanges();
+
+                // Retornar que deu certo
+                return true;
+            }
+            catch
+            {
+                // Retornar que não foi deletada
+                return false;
+            }
+            
+        }
+
         public List<Ocorrencia>? GetAllByTorcedorId(int torcedorId)
         {
             // Tentar

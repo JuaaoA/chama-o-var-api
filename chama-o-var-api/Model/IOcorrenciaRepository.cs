@@ -14,6 +14,8 @@ namespace chama_o_var_api.Model
 
 		List<Ocorrencia>? GetAllByTorcedorId(int torcedorId);
 
+		bool Delete(int id);
+
 		bool Update(int id, string acontecimento, DateTime data, int penalidade);
 
 		List<Ocorrencia> Get();
