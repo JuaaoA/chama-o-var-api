@@ -34,6 +34,33 @@ namespace chama_o_var_api.Infra
             return usuario;
         }
 
+        public Torcedor? GetTorcedorByCPF(string cpf)
+        {
+            // Declarar torcedor nulo
+            Torcedor? usuario = null;
+
+            // Tentar encontrar
+            try
+            {
+                // Procurar torcedor com esse cpf
+                usuario = _context.Torcedores.SingleOrDefault(usr => usr.cpf == cpf);
+
+                // Se o torcedor não for encontrado
+                if (usuario == null)
+                {
+                    return null;
+                }
+            }
+            catch
+            {
+                // Retornar nulo caso erro
+                return null;
+            }
+
+            // Retornar o encontrado
+            return usuario;
+        }
+
         public Torcedor? GetTecnicoById(int id)
         {
             // Declarar um torcedor nulo

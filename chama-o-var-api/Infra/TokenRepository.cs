@@ -33,6 +33,35 @@ namespace chama_o_var_api.Infra
             return tkEncontrado;
         }
 
+        public Torcedor? GetTecnicoByToken(string token)
+        {
+            // Declarar o tecnico vazio
+            Torcedor? tecnico_encontrado;
+
+            // Tentar
+            try
+            {
+                // Pegar o token
+                Token? id_tecnico = _context.Tokens.SingleOrDefault(tk => tk.nome == token);
+
+                // Retornar nulo, caso não encontre
+                if (id_tecnico == null)
+                {
+                    return null;
+                }
+
+                // encontrar o técnico de acordo com o token encontrado
+                tecnico_encontrado = _context.Torcedores.SingleOrDefault(user => user.id == id_tecnico.torcedor && user.tecnico);
+
+                // Finalmente, retornar o tecnico
+                return tecnico_encontrado;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
         public string CriarToken(int idTorcedor)
         {
             string codigoToken;

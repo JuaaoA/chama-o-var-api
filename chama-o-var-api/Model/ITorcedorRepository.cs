@@ -22,6 +22,8 @@ namespace chama_o_var_api.Model
 		Torcedor? GetTorcedorById(int id);
 
 		Torcedor? GetTecnicoById(int id);
+
+		Torcedor? GetTorcedorByCPF(string cpf);
     }
 }
 

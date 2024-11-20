@@ -87,12 +87,15 @@ namespace chama_o_var_api.Controllers
 		// Interface
 		private readonly IOcorrenciaRepository _ocorrenciaRepository;
 		private readonly ITorcedorRepository _torcedorRepository;
+		private readonly ITokenRepository _tokenRepository;
 
 		// Construtor
-		public OcorrenciaController(IOcorrenciaRepository ocorrenciaRepository, ITorcedorRepository torcedorRepository)
+		public OcorrenciaController(IOcorrenciaRepository ocorrenciaRepository, ITorcedorRepository torcedorRepository,
+			ITokenRepository tokenRepository)
 		{
 			_ocorrenciaRepository = ocorrenciaRepository;
 			_torcedorRepository = torcedorRepository;
+			_tokenRepository = tokenRepository;
 		}
 
 		// Requests
@@ -100,32 +103,55 @@ namespace chama_o_var_api.Controllers
 		// ADICIONAR OCORRENCIA
 		[HttpPost]
 		public IActionResult Add(string acontecimento, DateTime data, int penalidade,
-			int torcedor, int colaborador)
+			string cpf, string colaboradorToken)
 		{
-			// EVITAR ERROS - DADOS NULOS
-			if (acontecimento == "" || penalidade <= 0)
+			// Procurar o ID do torcedor usando o cpf usado
+			Torcedor? torcedor_encontrado = _torcedorRepository.GetTorcedorByCPF(cpf);
+
+			// EVITAR ERROS - TORCEDOR NULO
+			if (torcedor_encontrado == null)
+			{
+                return StatusCode(500, "Esse CPF não foi encontrado!");
+            }
+
+			// Pegar o id do torcedor
+			int torcedor = torcedor_encontrado.id;
+
+            // Procurar o colaborador
+            Torcedor? colaborador = _tokenRepository.GetTecnicoByToken(colaboradorToken);
+
+			// EVITAR ERROS - COLABORADOR NULO
+            if (colaborador == null)
+            {
+                return StatusCode(500, "O token informado não foi encontrado ou não possui colaborador atribuido!");
+            }
+
+            // EVITAR ERROS - DADOS NULOS
+            if (acontecimento == "" || penalidade <= 0)
 			{
 				// Retornar um erro
 				return StatusCode(500, "Um ou mais dados estão inválidos!");
 			}
 
 			// 2 - ERROS DE UNICIDADE -> É necessário que o colaborador e torcedor existam
-			if (!(_torcedorRepository.UsuarioJaExiste(torcedor) && _torcedorRepository.UsuarioJaExiste(colaborador)))
+			if (!(_torcedorRepository.UsuarioJaExiste(torcedor) && _torcedorRepository.UsuarioJaExiste(colaborador.id)))
 			{
 				// Retornar um erro
 				return StatusCode(500, "Torcedor ou colaborador não encontrado!");
 			}
+			
 
 			// 3 - TORCEDOR E COLABORADOR IGUAIS
-			if (torcedor == colaborador)
+			if (torcedor == colaborador.id)
 			{
 				return StatusCode(500, "Colaborador é o mesmo do torcedor");
 			}
 
 			// Criar ocorrencia e confirmar no BD
 			var novaOcorrencia = new Ocorrencia(acontecimento, data, penalidade,
-				torcedor, colaborador);
+				torcedor, colaborador.id);
 
+			// Adicionar no banco de dados
 			_ocorrenciaRepository.Add(novaOcorrencia);
 
 			// Retornar código 200

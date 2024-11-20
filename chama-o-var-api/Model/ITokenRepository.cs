@@ -17,6 +17,8 @@ namespace chama_o_var_api.Model
 
         string CriarToken(int idTorcedor);
 
+        Torcedor? GetTecnicoByToken(string token);
+
         List<Token> Get();
     }
 }
