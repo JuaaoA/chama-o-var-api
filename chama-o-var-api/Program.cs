@@ -14,6 +14,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<ITorcedorRepository, TorcedorRepository>();
 builder.Services.AddTransient<ITokenRepository, TokenRepository>();
 builder.Services.AddTransient<IOcorrenciaRepository, OcorrenciaRepository>();
+builder.Services.AddTransient<IEventoRepository, EventoRepository>();
+builder.Services.AddTransient<IIngressoRepository, IngressoRepository>();
 
 var app = builder.Build();
 

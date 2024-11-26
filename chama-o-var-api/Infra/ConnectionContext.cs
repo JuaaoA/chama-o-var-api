@@ -12,6 +12,8 @@ namespace chama_o_var_api.Infra
         public DbSet<Torcedor> Torcedores { get; set; }
         public DbSet<Token> Tokens { get; set; }
         public DbSet<Ocorrencia> Ocorrencias { get; set; }
+        public DbSet<Evento> Eventos { get; set; }
+        public DbSet<Ingresso> Ingressos { get; set; }
 
         // TODO - CRIAR CONFIGS
 

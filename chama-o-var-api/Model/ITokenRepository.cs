@@ -19,6 +19,8 @@ namespace chama_o_var_api.Model
 
         Torcedor? GetTecnicoByToken(string token);
 
+        Torcedor? GetTorcedorByToken(string token);
+
         List<Token> Get();
     }
 }

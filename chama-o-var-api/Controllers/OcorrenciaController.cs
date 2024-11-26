@@ -9,6 +9,8 @@ using chama_o_var_api.Infra;
 namespace chama_o_var_api.Controllers
 {
     // ROTAS
+
+	/*
     [ApiController]
     [Route("chamaovar-api/ocorrencia/procurar/")]
     public class OcorrenciaGeneralSearchController : ControllerBase
@@ -33,6 +35,7 @@ namespace chama_o_var_api.Controllers
             return Ok();
         }
     }
+	*/
 
     [ApiController]
 	[Route("chamaovar-api/ocorrencia/procurar/torcedor")]
