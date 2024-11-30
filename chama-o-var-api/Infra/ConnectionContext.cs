@@ -18,7 +18,7 @@ namespace chama_o_var_api.Infra
         // BANCO DE DADOS
         string mysqlConnection = "Server=localhost;" +
             "Port=3306;" +
-            "Database=dbFuncionarios;" +
+            "Database=chamaovar;" +
             "User=root;";
 
         // Ao configurar

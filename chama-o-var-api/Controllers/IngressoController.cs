@@ -9,6 +9,51 @@ using chama_o_var_api.Infra;
 namespace chama_o_var_api.Controllers
 {
 	[ApiController]
+	[Route("/chamaovar-api/ingresso/byallIDs")]
+	public class IngressoByAllIdsController : ControllerBase
+	{
+        // Interfaces
+        private readonly IIngressoRepository _ingressoRepository;
+        private readonly ITokenRepository _tokenRepository;
+        private readonly IEventoRepository _eventoRepository;
+
+        // Construtor
+        public IngressoByAllIdsController(IIngressoRepository ingressoRepository,
+            ITokenRepository tokenRepository, IEventoRepository eventoRepository)
+        {
+            _ingressoRepository = ingressoRepository;
+            _tokenRepository = tokenRepository;
+            _eventoRepository = eventoRepository;
+        }
+
+		// Requests
+		[HttpGet]
+		public IActionResult GetByAllIDs(int idEvento, string tokenUsuario)
+		{
+			try
+			{
+				// Pegar o torcedor
+				Torcedor? tcdr = _tokenRepository.GetTorcedorByToken(tokenUsuario);
+
+				// Se torcedor não existir
+				if (tcdr == null) return StatusCode(500, "Não foi possível encontrar o torcedor!");
+
+				// Pegar o id do evento e o torcedor e procurar ingresso
+				Ingresso? ing = _ingressoRepository.GetByIDS(tcdr.id, idEvento);
+
+				if (ing == null) return StatusCode(400, "Não existe ingresso");
+
+				// Por fim, retornar o ingresso
+				return Ok(ing);
+			}
+			catch
+			{
+				return StatusCode(500, "Não foi possivel procurar ingresso!");
+			}
+		}
+    }
+
+	[ApiController]
 	[Route("/chamaovar-api/ingresso/ByEvento")]
 	public class IngressoByEventoController : ControllerBase
 	{

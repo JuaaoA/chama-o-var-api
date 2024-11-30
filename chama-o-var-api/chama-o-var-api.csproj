@@ -16,4 +16,10 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.9.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="MySQL\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="MySQL\" />
+  </ItemGroup>
 </Project>
